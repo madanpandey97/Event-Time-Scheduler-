@@ -160,7 +160,7 @@ def blocked_slots(first_user, second_user):
         temp_output = blocked_time_calulation(new_sorted_blocked_list,end_flag)
         output_result = output_result + temp_output
 
-    global_available_list.extend(output_result)
+    # global_available_list.extend(output_result)
     print(json.dumps(str(output_result)))
     return output_result
 

@@ -1,6 +1,5 @@
 from flask import Flask
-from flask_restplus import Resource, Api, fields
-
+from flask_restplus import Resource, Api, fields, Namespace
 import func_task
 
 app = Flask(__name__)
