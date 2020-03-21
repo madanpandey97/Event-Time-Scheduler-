@@ -1,6 +1,6 @@
 from flask import Flask
-from flask_restplus import Resource, Api, fields, Namespace
-import func_task
+from flask_restplus import Resource, Api, fields
+from func_task import blocked_slots, confirmed_block_slot , disallowed_slot
 
 app = Flask(__name__)
 api = Api(app)
@@ -48,7 +48,8 @@ class BlockedTimeSlot(Resource):
         first_user = api.payload["user_a_block_slot"]
         second_user = api.payload["user_b_block_slot"]
         print(first_user)
-        temp = func_task.blocked_slots(first_user, second_user)
+        temp = blocked_slots(first_user, second_user)
+        print(temp)
         return temp
 
 @api.route('/confirmed_slot')
@@ -62,7 +63,7 @@ class ConfirmedTimeSlot(Resource):
         first_user_confirmed_slot = api.payload['user_a_confirmed_meetings']
         second_user_confirmed_slot = api.payload['user_b_confirmed_meetings']
         print(first_user)
-        final_data, flag = func_task.confirmed_block_slot(first_user_confirmed_slot, second_user_confirmed_slot, first_user, second_user)
+        final_data, flag = confirmed_block_slot(first_user_confirmed_slot, second_user_confirmed_slot, first_user, second_user)
         if flag:
             return {'status': ' User have same confirmed meeting time slot'}
         else:
@@ -80,7 +81,7 @@ class DisallowedTimeSlot(Resource):
         second_user_confirmed_slot = api.payload['user_b_confirmed_meetings']
         disallowed_timed_slot = api.payload['disallowed_slots']
         print(first_user)
-        final_data , flag = func_task.disallowed_slot(disallowed_timed_slot, first_user_confirmed_slot, second_user_confirmed_slot, first_user, second_user)
+        final_data , flag = disallowed_slot(disallowed_timed_slot, first_user_confirmed_slot, second_user_confirmed_slot, first_user, second_user)
         if flag:
             return {'status': ' User have same confirmed meeting time slot'}
         else:

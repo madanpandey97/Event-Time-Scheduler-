@@ -164,7 +164,28 @@ def blocked_slots(first_user, second_user):
     print(json.dumps(str(output_result)))
     return output_result
 
+first_user = [
+    {
+        "startTime": "2020-03-18 17:10:00",
+        "endTime": "2020-03-18 17:25:00"
+    },
+    {
+        "startTime": "2020-03-18 14:00:00",
+        "endTime": "2020-03-18 14:15:00"
+    }
+]
 
+second_user = [
+    {
+        "startTime": "2020-03-18 08:00:00",
+        "endTime": "2020-03-18 08:15:00"
+    },
+    {
+        "startTime": "2020-03-18 11:00:00",
+        "endTime": "2020-03-18 11:15:00"
+    }
+]
+blocked_slots(first_user, second_user)
 ############################################################################################
 
 
