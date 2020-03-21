@@ -28,8 +28,9 @@ Now open your browser and visit url ``` http://127.0.0.1:5000/ ```
 Click on default url, There is seperate endpoint for blocked timeslot, confirmed timeslot and disallowed_timeslot
 
 ### Sample Screenshot
-<a href="https://ibb.co/HNWbZ2g"><img src="https://i.ibb.co/HNWbZ2g/Screenshot-30.png" alt="Screenshot-30" border="0"></a>
+<a href="https://ibb.co/HNWbZ2g"><img src="https://i.ibb.co/Q82T0cm/Screenshot-30.png" alt="Screenshot-30" border="0"></a>
 
+Click on any endpoint and press the button try it out. Pass the input in required form which is required by the Api. 
 
-
-
+### sample screenshot 
+<a href="https://ibb.co/h72CgJn"><img src="https://i.ibb.co/Lk9v0Xq/Screenshot-23.png" alt="Screenshot-23" border="0"></a>
