@@ -31,7 +31,7 @@ Click on default url, There is seperate endpoint for blocked timeslot, confirmed
 <a href="https://ibb.co/HNWbZ2g"><img src="https://i.ibb.co/Q82T0cm/Screenshot-30.png" alt="Screenshot-30" border="0"></a>
 
 Click on any endpoint and press the button try it out. Pass the input in required form which is required by the Api. 
-### Sample Input 
+### Sample Input for disallowed_slot
 ```
 {
   "user_a_block_slot": [
