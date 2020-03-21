@@ -32,5 +32,11 @@ Click on default url, There is seperate endpoint for blocked timeslot, confirmed
 
 Click on any endpoint and press the button try it out. Pass the input in required form which is required by the Api. 
 
-### sample screenshot 
+### sample Screenshot 
 <a href="https://ibb.co/h72CgJn"><img src="https://i.ibb.co/Lk9v0Xq/Screenshot-23.png" alt="Screenshot-23" border="0"></a>
+
+Click on execute You will get the required output. Do the same process for all the remaining endpoint.
+
+### sample Screenshot ( Here timeslot is divided into time interval of 15 min )
+<a href="https://ibb.co/YDMMXK1"><img src="https://i.ibb.co/xm00YcB/Screenshot-24.png" alt="Screenshot-24" border="0"></a>
+
