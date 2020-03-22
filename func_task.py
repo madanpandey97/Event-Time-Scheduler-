@@ -1,15 +1,18 @@
+# Assignment -> Event Time Scheduler
+# Programmer -> Madan Pandey
+# File  -> Logic Part
+##########################################################################################
 
-
+# python packages
 from datetime import datetime
 import json
 import pandas as pd
 from datetime import timedelta
 
 
-#############################################################################
+########################################################################################
 
 f = "%Y-%m-%d %H:%M:%S" # time format
-
 
 ##########################################################################################
 # Event start time and end time
@@ -118,10 +121,18 @@ def blocked_time_calulation(block_list, end_flag):
 #####################################################################################
 
 
-def blocked_slots(first_user, second_user):
+def blocked_slots(data_dict):
     ''' finding total available time slot if input of  block time is passed '''
-    len_first_user = len(first_user)
-    len_second_user = len(second_user)
+    len_first_user = len_second_user = 0
+    first_user = second_user = []
+    print('data ', data_dict)
+    if len(data_dict['user_a_block_slot']) > 0:
+        first_user = data_dict['user_a_block_slot']
+        len_first_user = len(first_user)
+    if len(data_dict['user_b_block_slot']) > 0:
+        second_user= data_dict['user_b_block_slot']
+        len_second_user = len(second_user)
+
     if len_first_user > 0:
         first_user = rounding_time_stamp(first_user)
     if len_second_user > 0:
@@ -164,36 +175,24 @@ def blocked_slots(first_user, second_user):
     print(json.dumps(str(output_result)))
     return output_result
 
-first_user = [
-    {
-        "startTime": "2020-03-18 17:10:00",
-        "endTime": "2020-03-18 17:25:00"
-    },
-    {
-        "startTime": "2020-03-18 14:00:00",
-        "endTime": "2020-03-18 14:15:00"
-    }
-]
-
-second_user = [
-    {
-        "startTime": "2020-03-18 08:00:00",
-        "endTime": "2020-03-18 08:15:00"
-    },
-    {
-        "startTime": "2020-03-18 11:00:00",
-        "endTime": "2020-03-18 11:15:00"
-    }
-]
-blocked_slots(first_user, second_user)
 ############################################################################################
 
 
-def confirmed_block_slot(first_user_confirmed_slot, second_user_confirmed_slot, first_user, second_user):
+def confirmed_block_slot(data_dict):
     ''' based on the input received from user it will show all the available time slot for meeting
         it two user have same meeting time then it will show the relative response '''
-    len_first_user = len(first_user_confirmed_slot)
-    len_second_user = len(second_user_confirmed_slot)
+    len_first_user = len_second_user = 0
+    first_user_confirmed_slot = second_user_confirmed_slot = []
+    if len(data_dict['user_a_confirmed_meetings']) > 0:
+        first_user_confirmed_slot = data_dict['user_a_confirmed_meetings']
+        len_first_user = len(first_user_confirmed_slot)
+    if len(data_dict['user_b_confirmed_meetings']) > 0:
+        second_user_confirmed_slot = data_dict['user_b_confirmed_meetings']
+        len_second_user = len(second_user_confirmed_slot)
+
+    # deleting unusable key value pair from dictionary
+    # del(data_dict['user_a_confirmed_meetings'])
+    # del(data_dict['user_b_confirmed_meetings'])
     if len_first_user > 0:
         first_user_confirmed_slot = rounding_time_stamp(first_user_confirmed_slot)
     if len_second_user > 0 :
@@ -218,7 +217,7 @@ def confirmed_block_slot(first_user_confirmed_slot, second_user_confirmed_slot, 
         available_processing_list =  first_user_confirmed_slot + second_user_confirmed_slot
         available_processing_list  = sorted(available_processing_list, key=lambda t: t['startTime'])
 
-        blocked_time_slot = blocked_slots(first_user, second_user)
+        blocked_time_slot = blocked_slots(data_dict)
 
         new_available_time_slot = available_processing_list + blocked_time_slot
         new_available_time_slot = sorted(new_available_time_slot, key=lambda t: t['startTime'])
@@ -227,10 +226,8 @@ def confirmed_block_slot(first_user_confirmed_slot, second_user_confirmed_slot, 
         print('final confirmed list', json.dumps(str(final_output)))
     return final_output, status_flag
 
-
-
-
 #################################################################################################
+
 def forming_data_from_list(new_list):
     ''' formating data in output form from a list'''
     len_new_list =len(new_list)
@@ -248,6 +245,7 @@ def forming_data_from_list(new_list):
             data_dict.append(temp)
     return data_dict
 
+##########################################################################################
 
 def time_slot_divider(interval_time_list):
     '''divide the timestamp into 15 minute slot each'''
@@ -269,17 +267,24 @@ def time_slot_divider(interval_time_list):
 
     return temp_list
 
+########################################################################################
 
-
-def disallowed_slot(disallowed_time_slot,first_user_confirmed_slot, second_user_confirmed_slot, first_user, second_user ):
+def disallowed_slot(data_dict):
     ''' if the disallowed input passed along with the blocked and confirmed then
      it will return all available time slot for meeting'''
-    len_disallowed_time_slot = len(disallowed_time_slot)
+
+    len_disallowed_time_slot = 0
+    disallowed_time_slot  = []
+    if len(data_dict['disallowed_slots']) > 0:
+        disallowed_time_slot = data_dict['disallowed_slots']
+        len_disallowed_time_slot = len(disallowed_time_slot)
+
+    print('disallowed ' ,data_dict)
     if len_disallowed_time_slot > 0 :
         disallowed_time_slot = rounding_time_stamp(disallowed_time_slot)
-    confirmed_time_slots, status_flag = confirmed_block_slot(first_user_confirmed_slot,second_user_confirmed_slot, first_user, second_user)
+    confirmed_time_slots, status_flag = confirmed_block_slot(data_dict)
     print(confirmed_time_slots)
-    new_available_slot= confirmed_time_slots + disallowed_time_slot
+    new_available_slot = confirmed_time_slots + disallowed_time_slot
     processing_list = []
     if status_flag:
         return processing_list, status_flag
@@ -289,10 +294,10 @@ def disallowed_slot(disallowed_time_slot,first_user_confirmed_slot, second_user_
 
         processing_list = time_slot_divider(final_output)
         processing_list = json.dumps(str(processing_list))
+        print(processing_list)
         return processing_list, status_flag
 
 
 
 
-
-
+############################ End File ########################################################
